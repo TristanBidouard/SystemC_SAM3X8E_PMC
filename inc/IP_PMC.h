@@ -22,6 +22,8 @@ SC_MODULE(IP_PMC)
 
   SC_CTOR(IP_PMC) : socket("socket")
   {
+    socket.register_b_transport(this, &IP_PMC::b_transport);
+
     SC_THREAD(test);           // register do_add with kernel
   }
 }; 

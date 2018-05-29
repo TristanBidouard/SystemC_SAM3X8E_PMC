@@ -22,7 +22,7 @@ void test_bench::Test()
     for (int i = 32; i < 96; i += 4)
     {
         tlm::tlm_command cmd = static_cast<tlm::tlm_command>(rand() % 2);
-        if (cmd == tlm::TLM_WRITE_COMMAND) data = 0xFF000000 | i;
+        if (cmd == tlm::TLM_WRITE_COMMAND) data = 0x00000002;
 
         trans->set_command( cmd );
         trans->set_address( i );
@@ -31,7 +31,15 @@ void test_bench::Test()
         trans->set_byte_enable_ptr( 0 );
         trans->set_dmi_allowed( false );
         trans->set_response_status( tlm::TLM_INCOMPLETE_RESPONSE );
+
+        cout << "envoi commande : "  << cmd <<endl;
+        cout << "envoi address : " << i << endl;
+        cout << "envoi data : " << data << endl;
+    
         socket->b_transport(*trans, delay);
+
+         if ( trans->is_response_error() )
+
         wait(delay);
     }
 }
