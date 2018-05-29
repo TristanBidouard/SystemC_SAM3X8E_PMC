@@ -14,7 +14,7 @@ TARGET 		    = PMCexe
 
 # Compiling options
 CC 		        = g++
-CFLAGS 		    = -W -Wall -I $(SYSCDIR)/include/
+CFLAGS 		    = -W -Wall -I $(SYSCDIR)/include/ -I $(INCDIR)/
 
 # Link options
 # LFLAGS 		    = -L $(SYSCDIR)/lib-linux64 -I $(SYSCDIR)/include/ -lsystemc 
@@ -35,11 +35,11 @@ RM 		        = rm -f
 all : $(BIN)
 
 $(BIN) : $(OBJECTS)
-	$(CC) -o $@ $(OBJECTS) $(LFLAGS)
+	@$(CC) -o $@ $(OBJECTS) $(LFLAGS)
 	@LD_LIBRARY_PATH=$(SYSCDIR)/lib-linux64/ $(BIN)
 
 $(OBJECTS) : $(OBJDIR)/%.o : $(SRCDIR)/%.cpp 
-	$(CC) -c $< -o $@ $(CFLAGS)
+	@$(CC) -c $< -o $@ $(CFLAGS)
 
 #	$(CC) -I $(INCDIR) $(CFLAGS) -c $(SOURCES) -o $(OBJDIR)
 
