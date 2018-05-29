@@ -15,5 +15,6 @@ make clear
 Pour publier avec git :
 bash git.sh
 
-Pour configurer le 'username' automatiquement :
-git config credential.username <ton.username.git>
+Pour ne plus retaper USERNAME et PASSWORD a chaque PUSH :
+git config credential.helper store
+Puis taper USERNAME et PASSWORD. Et le prochain PUSH ne demandera plus les log.
