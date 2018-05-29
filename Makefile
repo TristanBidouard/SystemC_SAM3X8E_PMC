@@ -14,7 +14,7 @@ TARGET 		    = PMCexe
 
 # Compiling options
 CC 		        = g++
-CFLAGS 		    = -W -Wall -I $(SYSCDIR)/include/
+CFLAGS 		    = -W -Wall -I $(SYSCDIR)/include/ -I $(INCDIR)/
 
 # Link options
 # LFLAGS 		    = -L $(SYSCDIR)/lib-linux64 -I $(SYSCDIR)/include/ -lsystemc 
