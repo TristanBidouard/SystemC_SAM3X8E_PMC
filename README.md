@@ -12,5 +12,8 @@ make clean
 Pour supprimer l'éxécutable :
 make clear
 
+Pour publier avec git :
+bash git.sh
+
 Pour configurer le 'username' automatiquement :
 git config credential.username <ton.username.git>
