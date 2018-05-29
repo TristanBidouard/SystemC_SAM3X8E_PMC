@@ -13,7 +13,7 @@ Pour supprimer l'éxécutable :
 make clear
 
 Pour publier avec git :
-bash git.sh
+bash git.sh "MonCommentaire"
 
 Pour ne plus retaper USERNAME et PASSWORD a chaque PUSH :
 git config credential.helper store

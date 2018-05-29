@@ -14,12 +14,11 @@ TARGET 		    = PMCexe
 
 # Compiling options
 CC 		        = g++
-CFLAGS 		    = -W -Wall -I $(SYSCDIR)/include/
+CFLAGS 		    = -W -Wall
 
 # Link options
-# LFLAGS 		    = -L $(SYSCDIR)/lib-linux64 -I $(SYSCDIR)/include/ -lsystemc 
-LFLAGS                    = -L $(SYSCDIR)/lib-linux64 -lsystemc
-
+LINKER 		    = $(CC)
+LFLAGS 		    = -L $(SYSCDIR)/lib-linux64 -I $(SYSCDIR)/include/ -lsystemc 
 
 # Variables
 BIN             = $(BINDIR)/$(TARGET)
@@ -35,15 +34,14 @@ RM 		        = rm -f
 all : $(BIN)
 
 $(BIN) : $(OBJECTS)
-	$(CC) -o $@ $(OBJECTS) $(LFLAGS)
-	@LD_LIBRARY_PATH=$(SYSCDIR)/lib-linux64/ $(BIN)
+	$(CC) -o $(BIN) $(OBJECTS) $(CFLAGS)
 
-$(OBJECTS) : $(OBJDIR)/%.o : $(SRCDIR)/%.cpp 
-	$(CC) -c $< -o $@ $(CFLAGS)
+$(OBJECTS) : $ : $(SRCDIR)/%.cpp
+	$(CC) -o $(INCLUDES) $(CFLAGS)
 
-#	$(CC) -I $(INCDIR) $(CFLAGS) -c $(SOURCES) -o $(OBJDIR)
-
-
+#all :
+#	$(LINKER) $(SOURCES) -o $(BIN) $(LFLAGS)
+#	LD_LIBRARY_PATH=$(SYSCDIR)/lib-linux64/ $(BIN)
 ################################### CLEANER ####################################
 .PHONY: clean
 clean :
