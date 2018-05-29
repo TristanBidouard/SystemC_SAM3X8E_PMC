@@ -1,9 +1,14 @@
-#include "../inc/include.h"
 #include <iostream>
+
+#include "TB.h"
+#include "IP_PMC.h"
+
 using namespace std;
 
 int main() 
 {
-    cout << num;
+    cout << a;
+    cout << b;
     return 0;
 }
+
