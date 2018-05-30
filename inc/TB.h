@@ -1,6 +1,7 @@
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 
 #include "systemc.h"
+#include <sstream>
 
 #define ADR 0x400E0608
 
@@ -26,13 +27,20 @@ SC_MODULE(cortex)
 {
     int data;
 
-    void cortex_constructor();
+    void cortex_TB();
+    void send_cmd_TB(int cmd, int adr, int data);
+    void enable_all_pid();
+    void disable_all_pid();
+    void read_pid();
+    void custom_pid();
 
     tlm_utils::simple_initiator_socket<cortex> socket;
 
     /* Constructeur de la classe */
     SC_CTOR(cortex) : socket("socket"){
-        SC_THREAD(cortex_constructor);
+        
+
+        SC_THREAD(cortex_TB);
     }
 };
 
@@ -41,8 +49,11 @@ SC_MODULE(GPIO)
     socket_tb* socket_GPIO[4];
 
     SC_CTOR(GPIO){
-    for (int i = 0 ; i < 4 ; i++)
-        socket_GPIO[i] = new socket_tb("GPIO");
+        for (int i = 0 ; i < 4 ; i++) {      
+            std::ostringstream ss;
+            ss << "GPIO" << i;
+            socket_GPIO[i] = new socket_tb(ss.str());
+        }
     }
 };
 
@@ -52,8 +63,11 @@ SC_MODULE(UART)
 
     /* Constructeur de la classe UART */
     SC_CTOR(UART){
-    for (int i = 0 ; i < 4 ; i++)
-        socket_UART[i] = new socket_tb("UART");
+        for (int i = 0 ; i < 4 ; i++) {
+            std::ostringstream ss;
+            ss << "UART" << i;
+            socket_UART[i] = new socket_tb(ss.str());
+        }
     }
 };
 

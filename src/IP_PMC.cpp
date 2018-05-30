@@ -18,18 +18,10 @@ void IP_PMC::b_transport( tlm::tlm_generic_payload& trans, sc_time& delay)
     unsigned char*   byt = trans.get_byte_enable_ptr();
     unsigned int     wid = trans.get_streaming_width();
 
-    int offset = adr - REGISTERBEGIN;
+    int offset = adr;
     cout << "Offset = " << offset << endl;
 
     memcpy(&data_in, ptr, len);
-
-    cout << "--------------------- RECEPTION -------------------" << endl;
-    cout << "reçu commande : "  << cmd <<endl;
-    cout << "reçu address : " << hex << adr << endl;
-    cout << "reçu data : " << data_in << endl;
-    cout << "----------------------------------------------------" << endl;
-        
-    
 
     if(cmd) {
         if (adr == 0x10) { 
@@ -37,37 +29,55 @@ void IP_PMC::b_transport( tlm::tlm_generic_payload& trans, sc_time& delay)
                     indice = indice << 1;
                     result = data_in & indice;
                     switch(result) {
-		                case 0x00020000 : socket_UART_o[0]->enable();       // Activation CLK_EN UART0
-		                case 0x00040000 : socket_UART_o[1]->enable();       // Activation CLK_EN UART1
+		                case 0x00020000 : 
+                            socket_UART_o[0]->enable();       // Activation CLK_EN UART0
+                            break;
+		                case 0x00040000 : 
+                            socket_UART_o[1]->enable();       // Activation CLK_EN UART1
+                            break;
 		                case 0x00080000 : socket_UART_o[2]->enable();       // Activation CLK_EN UART2
+                            break;
 		                case 0x00100000 : socket_UART_o[3]->enable();       // Activation CLK_EN UART3
+                            break;
 		                case 0x08000000 : enable_timer();                   // Activation CLK_EN TIMER
+                            break;
 		                case 0x00000800 : socket_GPIO_o[0]->enable();       // Activation CLK_EN GPIO_A
+                            break;
                         case 0x00001000 : socket_GPIO_o[1]->enable();       // Activation CLK_EN GPIO_B
+                            break;
                         case 0x00002000 : socket_GPIO_o[2]->enable();       // Activation CLK_EN GPIO_C
+                            break;
                         case 0x00004000 : socket_GPIO_o[3]->enable();       // Activation CLK_EN GPIO_D
-		                default: cout << "Valeur ENABLE inconnue\n";
+                            break;
 	                }
                 }
-                retour =  mem[0x18].write(data_in); // Mettre à jour le registre de status
+                retour =  mem[0x18/4].write(data_in); // Mettre à jour le registre de status
         } else if (adr == 0x14) {
                 for (int i = 0 ; i < 32 ; i++) {
                     indice = indice << 1;
                     result = data_in & indice;
                     switch(result) {
 		                case 0x00020000 : socket_UART_o[0]->disable();
-		                case 0x00040000 : socket_UART_o[1]->disable();  
-		                case 0x00080000 : socket_UART_o[2]->disable();    
-		                case 0x00100000 : socket_UART_o[3]->disable();     
-		                case 0x08000000 : disable_timer();                
-		                case 0x00000800 : socket_GPIO_o[0]->disable();    
-                        case 0x00001000 : socket_GPIO_o[1]->disable();   
-                        case 0x00002000 : socket_GPIO_o[2]->disable();      
+                            break;
+		                case 0x00040000 : socket_UART_o[1]->disable();
+                            break;  
+		                case 0x00080000 : socket_UART_o[2]->disable();
+                            break;    
+		                case 0x00100000 : socket_UART_o[3]->disable();
+                            break;     
+		                case 0x08000000 : disable_timer();
+                            break;                
+		                case 0x00000800 : socket_GPIO_o[0]->disable();
+                            break;    
+                        case 0x00001000 : socket_GPIO_o[1]->disable();
+                            break;   
+                        case 0x00002000 : socket_GPIO_o[2]->disable();
+                            break;      
                         case 0x00004000 : socket_GPIO_o[3]->disable();
-		                default: cout << "Valeur DISABLE inconnue\n";
+                            break;
 	                }
                 }
-            retour =  mem[0x18].write(data_in); // Mettre à jour le registre de status
+            retour =  mem[0x18/4].write(data_in); // Mettre à jour le registre de status
         }
         /* Mettre à jour le registre en question */
         retour =  mem[offset/4].write(data_in);
@@ -261,7 +271,7 @@ socket_PMC::socket_PMC(string nom) : socket("socket_UART") {
 
 int memory::read(int* valeur_lu) {
     if(type == "R" || type == "A"){
-        cout << "On lit la valeur '" << data << "' à l'adresse " << dec << adr << " qui a le status " << type << endl << endl << endl << endl;
+        cout << "On lit la valeur '" << hex << data << "' à l'adresse " << dec << adr << " qui a le status " << type << endl << endl << endl << endl;
         *valeur_lu = data;
         return (tlm::TLM_OK_RESPONSE);
     }else{
@@ -274,7 +284,7 @@ int memory::write(int data_in){
     /* Vérifier que le registre est W */
     if(type == "W" || type == "A"){
         data = data_in;
-        cout << "On écrit la donnée '" << data << "' à l'adresse " << dec << adr << " qui a le status " << type << endl << endl << endl << endl;
+        cout << "On écrit la donnée '" << hex << data << "' à l'adresse " << dec << adr << " qui a le status " << type << endl << endl << endl << endl;
         return (tlm::TLM_OK_RESPONSE);
     }else{
         cout << "Le status '" << type << "' de l'adresse " << dec << adr << " n'autorise pas la lecture." << endl << endl << endl << endl;
