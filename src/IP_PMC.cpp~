@@ -81,9 +81,11 @@ void IP_PMC::b_transport( tlm::tlm_generic_payload& trans, sc_time& delay)
         }
         /* Mettre à jour le registre en question */
         retour =  mem[offset/4].write(data_in);
+        /*mem[offset/4].write((int)(*ptr));*/
     } else {
         /* Lire le registre en question */
         retour = mem[offset/4].read((int*)ptr);
+        /**ptr = mem[offset/4].read();*/
     }
 
     trans.set_response_status((tlm::tlm_response_status)retour);

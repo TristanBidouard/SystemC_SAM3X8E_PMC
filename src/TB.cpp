@@ -7,6 +7,7 @@ void cortex::cortex_TB()
     disable_all_pid();
     read_pid();
     custom_pid();
+    read_pid();
 
 }
 
