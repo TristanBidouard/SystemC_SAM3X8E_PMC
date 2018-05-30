@@ -9,26 +9,33 @@ using namespace std;
 int sc_main(int argc, char* argv[])
 {
 
-    /*sc_signal<sc_logic> ASig, BSig, SumSig;*/
+    int i;
 
     /* Creer un module PMC */
-    IP_PMC pmc("NotrePmc");
+    IP_PMC pmc_o("module_Pmc");
 
-    /* Creer le module test bench */
-    test_bench test_bench("NotreTb");
+    /* Creer le module cortex */
+    cortex cortex_o("module_Processeur");
 
-    test_bench.socket.bind(pmc.socket);
+    /* Creer le module timer */
+    timer timer_o("module_Timer");
 
-    /*Stim1.A(ASig);
-    Stim1.B(BSig);
-    Stim1.result(SumSig);
+    /* Creer le module UART */
+    UART UART_o("module_UART");
 
-    add DUT("add");
-    DUT.A(ASig);
-    DUT.B(BSig);
-    DUT.SUM(SumSig);*/
+    /* Creer le module GPIO */
+    GPIO GPIO_o("module_GPIO");
+
+    /* Linker les sockets */
+    cortex_o.socket.bind(pmc_o.socket);
+    pmc_o.socket_timer.bind(timer_o.socket_timer);
+    for (i = 0 ; i < 4 ; i++) {
+        pmc_o.socket_UART_o[i]->socket.bind(UART_o.socket_UART[i]->socket);
+        pmc_o.socket_GPIO_o[i]->socket.bind(GPIO_o.socket_GPIO[i]->socket);
+    }
 
     sc_start();
+
     return 0;
 }
 
