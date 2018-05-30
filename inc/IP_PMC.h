@@ -20,7 +20,7 @@ class memory{
         char* type; // 'R', 'W', 'A', 'X'
     
         int read();
-        void write(int data_in);
+        int write(int data_in);
 };
 
 class socket_PMC {

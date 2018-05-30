@@ -32,7 +32,7 @@ void IP_PMC::b_transport( tlm::tlm_generic_payload& trans, sc_time& delay)
     cout << "Offset = " << offset << endl;
 
     if(cmd){
-        mem[offset/4].write((int)(*ptr));
+        *ptr = mem[offset/4].write((int)(*ptr));
     }else{
         *ptr = mem[offset/4].read();
     }
@@ -228,13 +228,14 @@ int memory::read(){
     }
 }
 
-void memory::write(int data_in){
+int memory::write(int data_in){
     if(type == "W" || type == "A"){
         data = data_in;
         cout << "On écrit la donnée '" << data << "' à l'adresse " << dec << adr << " qui a le status " << type << endl << endl << endl << endl;
+        return 0;
     }else{
         cout << "Le status '" << type << "' de l'adresse " << dec << adr << " n'autorise pas la lecture." << endl << endl << endl << endl;
-        /*return (tlm::TLM_COMMAND_ERROR_RESPONSE);*/
+        return (tlm::TLM_COMMAND_ERROR_RESPONSE);
     }           
 }
 
