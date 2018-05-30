@@ -8,7 +8,6 @@ using namespace std;
 
 int sc_main(int argc, char* argv[])
 {
-
     int i;
 
     /* Creer un module PMC */
