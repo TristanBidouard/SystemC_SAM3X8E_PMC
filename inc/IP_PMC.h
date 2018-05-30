@@ -19,7 +19,7 @@ class memory{
         int adr;
         char* type; // 'R', 'W', 'A', 'X'
     
-        int read();
+        int read(int* valeur_lu);
         int write(int data_in);
 };
 

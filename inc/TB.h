@@ -2,7 +2,7 @@
 
 #include "systemc.h"
 
-#define ADR 0x400E0704
+#define ADR 0x400E0608
 
 using namespace sc_core;
 using namespace sc_dt;
